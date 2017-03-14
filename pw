@@ -1,0 +1,57 @@
+#!/bin/bash
+
+password=$1
+
+if [[ $# -gt 1 || $1 = "-h" ]]; then
+		echo 'Usage: pw | pw -h | pw password'
+		echo "Note:   Valid passwords must be between 8-16 characters long.
+		contain at least 1 digit
+		contain at least 1 lowercase letter
+		contain at least 1 uppcase letter
+		contain one of @ # $ % & * + - ="
+fi
+if [[ $# -lt 1 ]]; then 
+		password=$( cat /dev/urandom | tr -dc '0-9A-Z@*+#$%&a-z' | head -c $(( 8 + $RANDOM % 8 )))
+	check=$( echo $password | grep -o ['@*+#$%&'] | wc -m )
+	while [[ $check  -gt 2 || $check -lt 1 ]]
+		do
+		password=$( cat /dev/urandom | tr -dc '0-9A-Z@*+#$%&a-z' | head -c $(( 8 + $RANDOM % 8 )))
+		check=$( echo $password | grep -o ['@*+#$%&'] | wc -m )
+	done
+	echo $password
+fi
+if [[ $# = 1 ]]; then
+	password=$1
+	echo "$password" | grep .*[A-Z].*[a-z].* > /dev/null
+	if [[ $? = 1 ]]; then
+		
+	echo "Password must contain at least one upper or lowercase characer"	
+		exit 2
+	fi
+
+	echo "$password" | grep [0-9] > /dev/null
+	if [[ $? = 1 ]]; then
+	
+	echo "Password must contain at least one digit"	
+		exit 3
+	fi
+
+	if [[ `echo "$password" | grep -o [\@\#\$\%\&\*\+\-] | wc -m` -gt 2 ]]; then
+		echo "You must only use one special character"
+		exit 4
+	fi
+	       
+	if [[ `echo "$password" | grep -o [\@\#\$\%\&\*\+\-] | wc -m` -lt 1 ]]; then
+		
+	echo "Password must contain at least one special character"	
+		exit 5
+	fi
+	woc=$( echo "$password" | wc -m )
+	if [[ $woc -lt 8 || $woc -gt 16 ]]; then
+		
+	echo "Password must be between 8 and 16 characters"	
+		exit 6
+	fi
+echo "$1 is a valid password"
+fi
+

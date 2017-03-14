@@ -1,0 +1,25 @@
+#!/bin/bash
+#Author: Kieran O'Connor
+#A calculator which follows order of operations
+#Usage: Number Operator Number
+#Notes: When running from shell use '' around expression to prevent expansion of wildcards.
+#set -f to prevent expansion
+set -f
+#Store output of bc caclulation to variable called "result"
+result=$( echo "scale=2;$*" | bc 2>&1 )
+#Error-Check the output, if output starts with a number display result
+if [[ $result =~ ^[0-9] ]];then
+	echo $*'='$result
+else
+	echo "Usage: Number Operator Number"
+fi
+#After first calculation use while loop to perform further calculations while response is y
+while read -p "Make another calculation? [y|n]: " response;[ "$response" = y ];do
+	read -p "Enter NUMBER OPERATOR NUMBER: " calc1
+	result=$( echo "scale=2;$calc1" | bc 2>&1 )
+	if [[ $result =~ ^[0-9] ]];then
+	echo $*'='$result
+else
+	echo "Usage: Number Operator Number"
+fi
+done

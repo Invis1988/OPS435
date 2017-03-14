@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# OPS435 - lab05
+# Written by Azzad Kara - February 2016
+# Seneca College, Toronto
+#
+# BASH that allows the user to add, subtract, multiply and divide two numbers.
+#
+# Note: This script takes three parameters
+#	Whole or Floating point number - for example 15 or 15.1254
+#	operator: + - / * (add, subtract, divide or multiply) 
+#	Whole or Floating point number - for example 12 or 12.32
+#
+# Usage: calc number operator number
+#
+#Function containing calculations based on operator input
+
+function calculate {
+if [ "$operator" = "+" ]; then
+	   result=`echo $n1 + $n2 | bc`
+	      echo "$n1 + $n2 = $result"
+     elif [ "$operator" = "-" ]; then
+	        result=`echo $n1 - $n2 | bc`
+		  echo "$n1 - $n2 = $result"
+	  elif [ "$operator" = "*" ]; then
+		    result=`echo $n1 \* $n2 | bc`
+		      echo "$n1 * $n2 = $result"
+	      elif [ "$operator" = "/" ]; then
+		        result=`echo $n1/$n2 | bc -l` # No scale
+			  echo "$n1 / $n2 = " $result
+			    answer=$(echo "scale=4; $n1/$n2" | bc)
+			      echo "$n1 / $n2 = " $answer
+		      else
+			         echo "Invalid operator!"
+			 fi
+	
+ }	
+function calcloop {
+read -p "Perform another calculation? [y|n]: " userresponse
+while [ "$userresponse" = "y" ]; do
+	echo
+	read -p "Input 'Number Operator Number' Eg. '4 + 2': " n1 operator n2
+	calculate
+read -p "Continue? [y/n]: " userresponse
+		 done
+	 }
+clear
+if [[ $# -lt 3 ]];then
+	echo "Usage: NUMBER OPERATOR NUMBER"
+	exit 1
+fi
+	echo "Usage: 'NUMBER OPERATOR NUMBER'"
+	for ((i=0;i<=$#;i++)); do
+	 n1=$1
+	 operator=$2 
+	 n2=$3
+	 calculate
+shift 3		 
+		 done
+
+	calcloop

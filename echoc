@@ -1,0 +1,38 @@
+#!/bin/bash
+# OPSPS435 - lab03
+# Written by John Selmys - February 2012
+# Modified by Kieran O'Connor - January 2016
+# Seneca College, Toronto
+#
+# BASH script to print strings in colour
+#
+# Note: This script takes at least two parameters
+#           COLOUR - which will be the colour of the string (see code below)
+#           STRING - string to colourize
+#
+# Usage: echoc COLOUR STRING
+#create an array which contain values attached to names of colours
+#the random association selects a random colour from the list by taking the value of 30 and adding a random number between 0-7, on it's own $(( $RANDOM % 8 )) would produce an output of 0-7, so it is the same thing as saying 30 + a number between 0-7
+declare -A colours=([black]="0;30" [red]="0;31" [green]="0;32" [yellow]="0;33" [blue]="0;34" [magenta]="0;35" [cyan]="0;36" [white]="0;37" [random]="0;$(( 30 + $RANDOM % 8 ))" [BLACK]="1;30" [RED]="1;31" [GREEN]="1;32" [YELLOW]="1;33" [BLUE]="1;34" [MAGENTA]="1;35" [CYAN]="1;36" [WHITE]="1;37" [RANDOM]="1;$(( 30 + $RANDOM % 8 ))")
+#check if there are at least 2 parameters 
+if [ $# -lt 2 ]; then
+        echo Usage: echoc COLOUR STRING
+   exit 1
+fi
+#set the regex for the first paramater ^ begins line $ ends line
+regex='^black$|^red$|^green$|^yellow$|^blue$|^magenta$|^cyan$|^white$|^random$'
+shopt -s nocasematch
+
+if [[ $1 =~ $regex ]]; then
+                echo -ne '\e['${colours[$1]}m
+		#shift $2 into $1
+                shift
+		#display $1 with the colour displayed and reset the colour back to normal
+                echo -e $*'\e[0m'
+        exit 0
+        else
+                echo COLOUR must be one of 'black|red|green|yellow|blue|magenta|cyan|white'
+                echo or 'BLACK|RED|GREEN|YELLOW|BLUE|MAGENTA|CYAN|WHITE' for bold
+        exit 2
+fi
+
