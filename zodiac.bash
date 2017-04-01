@@ -1,15 +1,12 @@
-#!/bin/bash
-function chinese {
-eyear=$(( year - 60 ))
-query="$eyear$2$3"
-while IFS=, read -r term start end; do
-	((query >= start)) && ((query <= end)) && echo -n "Your Chinese Zodiac is: $term"
-done <chzod
-query="$1$2$3"
-while IFS=, read -r term start end; do
-	((query >= start)) && ((query <= end)) && echo " $term"
-done <animal
-}
+#!/bin/bash    
+#title           :zodiac.bash
+#description     :This script will generate a zodiacs and horoscopes
+#author		 :Kieran O'Connor
+#date            :20170401
+#version         :1  
+#usage		 :./zodiac
+#notes           :Must have CSV files formatted as zodiac,yyyymmdd,yyyymmdd to use with while loop. EX: Dragon,19880122,19890204
+#bash_version    :4.1.5(1)-release
 case $# in 
    1) year=${1:0:4}
 	month=${1:4:2}
