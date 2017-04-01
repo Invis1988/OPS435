@@ -45,11 +45,6 @@ query="$wmonth$day"
 while IFS=, read -r term start end; do
 	((query >= start)) && ((query <= end)) && echo "Your Western Zodiac is $term"
 done <west
-range=({1984..2043})
-if [[ ! "${range[@]}" =~ "$year" ]];then
-	echo "Year must be between 1984 and 2043 for Chinese Zodiac"
-exit
-fi
 eyear=$((year - 60))
 query="$eyear$month$day"
 while IFS=, read -r term start end; do
