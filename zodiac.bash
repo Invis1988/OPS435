@@ -1,7 +1,7 @@
 #!/bin/bash    
 #title           :zodiac.bash
 #description     :This script will generate a zodiacs and horoscopes
-#author		 :Kieran O'Connor
+#author		 :SPC
 #date            :20170401
 #version         :1  
 #usage		 :./zodiac
